@@ -8,6 +8,7 @@ BUILD_DIR := build
 TEX_FILES := $(wildcard *.tex)
 BIB_FILES := $(wildcard *.bib)
 PDF_FILES := $(patsubst %.tex, $(BUILD_DIR)/%.pdf, $(TEX_FILES))
+LATEX_FLAGS := -output-directory=$(BUILD_DIR) -aux-directory=$(BUILD_DIR) -shell-escape
 
 .PHONY: all
 all: $(PDF_FILES)
@@ -19,15 +20,15 @@ $(PDF_FILES): $(BIB_FILES)
 $(BUILD_DIR)/%.pdf: %.tex
 	echo $^
 	mkdir -p $(BUILD_DIR)
-	pdflatex -output-directory=$(BUILD_DIR) $<
+	pdflatex $(LATEX_FLAGS) $<
 # check for BibTeX files
 # make sure the .bib file has the same extension
 # as the .tex file!
 ifneq ($(wildcard %.bib), "")
 	TEXMFOUTPUT=$(BUILD_DIR)
 	bibtex $(BUILD_DIR)/$*
-	pdflatex -output-directory=$(BUILD_DIR) $<
-	pdflatex -output-directory=$(BUILD_DIR) $<
+	pdflatex $(LATEX_FLAGS) $<
+	pdflatex $(LATEX_FLAGS) $<
 endif
 
 .PHONY: clean
