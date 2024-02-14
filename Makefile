@@ -19,12 +19,13 @@ $(PDF_FILES): $(BIB_FILES)
 
 $(BUILD_DIR)/%.pdf: %.tex
 	echo $^
+	echo $?
 	mkdir -p $(BUILD_DIR)
 	pdflatex $(LATEX_FLAGS) $<
 # check for BibTeX files
 # make sure the .bib file has the same extension
 # as the .tex file!
-ifneq ($(wildcard %.bib), "")
+ifneq ($(wildcard $*.bib), "")
 	TEXMFOUTPUT=$(BUILD_DIR)
 	bibtex $(BUILD_DIR)/$*
 	pdflatex $(LATEX_FLAGS) $<
