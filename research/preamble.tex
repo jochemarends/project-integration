@@ -1,9 +1,24 @@
+\usepackage[acronym,nonumberlist,style=super]{glossaries}
 \usepackage[outputdir=build]{minted}
 \usepackage{apacite}
 \usepackage{graphicx}
 \usepackage{microtype}
-\usepackage{glossaries}
 
-% Abbreviations go here.
+% Acronyms go here.
 \newacronym{acs}{ACS}{Applied Computer Science}
+\newacronym{aiot}{AIoT}{Artificial Intelligence of Things}
+\newacronym{rd}{R\&D}{Research and Development}
+
+% Glossaries go here.
+\makeglossaries
+
+\newglossaryentry{wifi}{
+    name=WiFi,
+    description={A wireless networking technology that uses radio waves to provide high-speed Internet access},
+}
+
+\newglossaryentry{bluetooth}{
+    name=Bluetooth,
+    description={A short-range wireless interconnection of mobile phones, computers, and other electronic devices},
+}
 

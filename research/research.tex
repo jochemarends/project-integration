@@ -12,19 +12,35 @@
 \newpage
 
 \tableofcontents
-\newpage
+\clearpage
+
+\printglossary[type=\acronymtype,{title=Abbreviations}]
+\printglossary[type=main]
+\bibliographystyle{apacite}
+\bibliography{research}
+\clearpage
 
 \section{Introduction}
 As part of Project Integration, \gls{acs} students need to conduct research about the ESP32 microcontroller.
 Upon completion of this research, a set of assignments have to be completed.
 First, some introductory assignments have to be done in order to familiarize ourselves with concepts that are important for the project.
-At the end of the research, each student works on a final assignment that goes more in depth of a specific topic.
+At the end of the research, each student works on a final assignment that goes more in depth into a specific topic.
+
+\section{The ESP32}
+The ESP32 is a microcontroller developed by Espressif.
+The ESP32 has integrated \gls{wifi} and \gls{bluetooth} modules.
+
+\section{Espressif}
+Espressif Systems is a multinational semiconductor company that focusses among other things on developing wireless communication and \gls{aiot}.
+\cite{aboutespressif}
+
+\section {Lilygo}
+
 
 \section{Assignment 1}
-Show that the ESP32 can turn three different LEDs on and off seperately using an internal loop with delays.
+Show that the ESP32 can turn three different LEDs on and off seperately using an internal loop with delays.\\
 
-\bibliographystyle{apacite}
-\bibliography{research}
+\inputminted{cpp}{../leds/main/leds.cpp}
 
 \end{document}
 
