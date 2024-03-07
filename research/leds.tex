@@ -1,0 +1,45 @@
+\section{Assignment 1}
+Show that the ESP32 can turn three different LEDs on and off seperately using an internal loop with delays.\\
+
+\subsection{Circuit}
+The circuit for this assignment is quite straightforward.
+Just connect three LEDs to the ESP32, put these LEDs in series with a resistor, and connect them to a common ground.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{circuitikz}
+        \ctikzset{multipoles/dipchip/pin spacing=0.2}
+        \ctikzset{resistor=european}
+        \draw (0,0) node[dipchip,
+            num pins=30,
+            hide numbers,
+            external pins width=0.1,
+            external pad fraction=3](C){ESP32};
+
+            \draw (C.pin 11) -- ++(-0.5,0)   to[stroke led] ++(0,1) to[R] ++(0,2.0);
+            \draw (C.pin 12) -- ++(-1.5,0) coordinate (P1) -- (P1|-C.pin 11) to[stroke led] ++(0,1.0) to[R] ++(0,2.0);
+            \draw (C.pin 13) -- ++(-2.5,0) coordinate (P2) -- (P2|-C.pin 11) to[stroke led] ++(0,1.0) to[R] ++(0,2.0);
+            \draw (C.pin 14) -- ++(-3.5,0) coordinate (P3) -- (P3|-C.pin 11) -- ++(0,3.0) -- ++(3.0,0);
+
+            \node [right,font=\tiny]
+            at (C.bpin 11) {GPIO27};
+
+            \node [right,font=\tiny]
+            at (C.bpin 12) {GPIO14};
+
+            \node [right,font=\tiny]
+            at (C.bpin 13) {GPIO12};
+
+            \node [right,font=\tiny]
+            at (C.bpin 14) {GND};
+    \end{circuitikz}
+\end{figure}
+
+\subsection{Toolchain}
+For this assignment, I have used the ESP-IDF toolchain.
+\clearpage
+
+\subsection{Software}
+
+\inputminted{cpp}{../leds/main/leds.cpp}
+
