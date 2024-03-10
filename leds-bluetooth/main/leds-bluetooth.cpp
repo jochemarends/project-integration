@@ -1,3 +1,4 @@
+#include <cstdint>
 
 #include "esp_bt.h"
 #include "esp_bt_main.h"
@@ -7,20 +8,39 @@
 
 #define PROFILE_A_APP_ID 0
 
+struct T{
 esp_gatts_cb_t gatts_cb;
 uint16_t gatts_if;
 uint16_t app_id;
 uint16_t conn_id;
 uint16_t service_handle;
-esp_gatt_srvc_id_t service_id;
 uint16_t char_handle;
 esp_bt_uuid_t char_uuid;
 esp_gatt_perm_t perm;
 esp_gatt_char_prop_t property;
 uint16_t descr_handle;
 esp_bt_uuid_t descr_uuid;
+};
 
-void gatts_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatt_if, esp_ble_gatts_cb_param_t* param) {
+esp_gatt_srvc_id_t service_id{};
+std::uint16_t service_handle{};
+std::uint16_t char_handle{};
+std::uint16_t descr_handle{};
+
+constexpr std::uint16_t uuid = 0x00EE;
+constexpr std::uint16_t num_handle = 4;
+
+void gatts_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t* param) {
+    switch (event) {
+    case ESP_GATTS_REG_EVT:
+        service_id.is_primary = true;
+        service_id.id.inst_id = 0x00;
+        service_id.id.uuid.len = ESP_UUID_LEN_16;
+        service_id.id.uuid.uuid.uuid16 = uuid;
+        esp_ble_gatts_create_service(gatts_if, &service_id, num_handle);
+    case ESP_GATTS_WRITE_EVT:
+        service_handle = param->create.service_handle;
+    }
 }
 
 extern "C" void app_main() {
