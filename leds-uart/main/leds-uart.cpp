@@ -7,22 +7,17 @@
 #include "esp_vfs_dev.h"
 #include "rom/gpio.h"
 
-void configure_stdin() {
-    constexpr auto uart_num{CONFIG_ESP_UART_NUM};
-    setvbuf(stdin, nullptr, _IONBF, 0);
-    uart_driver_install(static_cast<uart_port_t>(uart_num), 256, 0, 0, nullptr, 0);
-    esp_vfs_dev_uart_use_driver(uart_num);
-    esp_vfs_dev_uart_port_set_rx_line_endings(uart_num, ESP_LINE_ENDINGS_CR);
-    esp_vfs_dev_uart_port_set_tx_line_endings(uart_num, ESP_LINE_ENDINGS_CRLF);
-}
-
 void toggle(gpio_num_t pin) {
     int level = gpio_get_level(pin) ^ 1;
     gpio_set_level(pin, level);
 }
 
 extern "C" void app_main() {
-    configure_stdin();
+    // configure stdin to use blocking mode
+    setvbuf(stdin, nullptr, _IONBF, 0);
+    constexpr auto uart_num = CONFIG_ESP_CONSOLE_UART_NUM;
+    uart_driver_install(static_cast<uart_port_t>(uart_num), 256, 0, 0, nullptr, 0);
+    esp_vfs_dev_uart_use_driver(uart_num);
 
     const std::map<char, gpio_num_t> led_pins{
         {'0', GPIO_NUM_12},
@@ -30,6 +25,7 @@ extern "C" void app_main() {
         {'2', GPIO_NUM_27},
     };
 
+    // configure the pins for input and output
     for (auto pin : led_pins | std::views::values) {
         gpio_pad_select_gpio(pin);
         gpio_reset_pin(pin);
