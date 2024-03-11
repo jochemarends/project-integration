@@ -1,34 +1,76 @@
 #include <cstdint>
+#include <thread>
+#include <chrono>
 
 #include "esp_bt.h"
 #include "esp_bt_main.h"
 #include "esp_gap_ble_api.h"
 #include "esp_gatts_api.h"
 #include "nvs_flash.h"
+#include "esp_gatt_common_api.h"
 
 #define PROFILE_A_APP_ID 0
 
-struct T{
-esp_gatts_cb_t gatts_cb;
-uint16_t gatts_if;
-uint16_t app_id;
-uint16_t conn_id;
-uint16_t service_handle;
-uint16_t char_handle;
-esp_bt_uuid_t char_uuid;
-esp_gatt_perm_t perm;
-esp_gatt_char_prop_t property;
-uint16_t descr_handle;
-esp_bt_uuid_t descr_uuid;
+
+static uint8_t adv_config_done = 0;
+#define adv_config_flag      (1 << 0)
+#define scan_rsp_config_flag (1 << 1)
+
+static esp_ble_adv_params_t adv_params = {
+    .adv_int_min        = 0x20,
+    .adv_int_max        = 0x40,
+    .adv_type           = ADV_TYPE_IND,
+    .own_addr_type      = BLE_ADDR_TYPE_PUBLIC,
+    .channel_map        = ADV_CHNL_ALL,
+    .adv_filter_policy = ADV_FILTER_ALLOW_SCAN_ANY_CON_ANY,
 };
+
+static void gap_event_handler(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param_t *param)
+{
+    switch (event) {
+    case ESP_GAP_BLE_ADV_DATA_SET_COMPLETE_EVT:
+         adv_config_done &= (~adv_config_flag);
+         if (adv_config_done == 0){
+             esp_ble_gap_start_advertising(&adv_params);
+         }
+         break;
+    case ESP_GAP_BLE_SCAN_RSP_DATA_SET_COMPLETE_EVT:
+         adv_config_done &= (~scan_rsp_config_flag);
+         if (adv_config_done == 0){
+             esp_ble_gap_start_advertising(&adv_params);
+         }
+         break;
+    default:
+             break;
+    }
+}
+
+
+//struct T{
+//esp_gatts_cb_t gatts_cb;
+//uint16_t gatts_if;
+//uint16_t app_id;
+//uint16_t conn_id;
+//uint16_t service_handle;
+//uint16_t char_handle;
+//esp_bt_uuid_t char_uuid;
+//esp_gatt_perm_t perm;
+//esp_gatt_char_prop_t property;
+//uint16_t descr_handle;
+//esp_bt_uuid_t descr_uuid;
+//};
 
 esp_gatt_srvc_id_t service_id{};
 std::uint16_t service_handle{};
 std::uint16_t char_handle{};
 std::uint16_t descr_handle{};
 
+esp_bt_uuid_t char_uuid;
+
 constexpr std::uint16_t uuid = 0x00EE;
+constexpr std::uint16_t char_uuid_num = 0xEE01;
 constexpr std::uint16_t num_handle = 4;
+esp_gatt_char_prop_t b_property{};
 
 void gatts_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t* param) {
     switch (event) {
@@ -38,8 +80,19 @@ void gatts_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp
         service_id.id.uuid.len = ESP_UUID_LEN_16;
         service_id.id.uuid.uuid.uuid16 = uuid;
         esp_ble_gatts_create_service(gatts_if, &service_id, num_handle);
-    case ESP_GATTS_WRITE_EVT:
+        esp_ble_gap_set_device_name("ESP-32-J");
+        break;
+    case ESP_GATTS_CREATE_EVT: {
         service_handle = param->create.service_handle;
+        char_uuid.len = ESP_UUID_LEN_16;
+        char_uuid.uuid.uuid16 = char_uuid_num;
+        esp_ble_gatts_start_service(service_handle);
+        b_property = ESP_GATT_CHAR_PROP_BIT_WRITE;
+        esp_ble_gatts_add_char(service_handle, &char_uuid, ESP_GATT_PERM_WRITE, b_property, NULL, NULL);
+        break;
+    }
+    default:
+        break;
     }
 }
 
@@ -58,6 +111,15 @@ extern "C" void app_main() {
 
     // register callbacks
     ESP_ERROR_CHECK(esp_ble_gatts_register_callback(gatts_event_handler));
-//    ESP_ERROR_CHECK(esp_ble_gap_register_callback(gap_event_handler));
+    ESP_ERROR_CHECK(esp_ble_gap_register_callback(gap_event_handler));
     ESP_ERROR_CHECK(esp_ble_gatts_app_register(PROFILE_A_APP_ID));
+
+    esp_err_t local_mtu_ret = esp_ble_gatt_set_local_mtu(512);
+    if (local_mtu_ret){
+        
+    }
+
+    //while (true) {
+     //   std::this_thread::sleep_for(std::chrono::seconds{1});
+    //}
 }
