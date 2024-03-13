@@ -12,7 +12,7 @@ const port = ":8080"
 
 func main() {
     // Connect to the database
-    db, err := sql.Open("mysql", "root:@tcp(127.0.0.1)/PI")
+    db, err := sql.Open("mysql", "Jochem:Tilligte@tcp(127.0.0.1)/PI")
     if err != nil {
         log.Fatal(err)
     }
@@ -26,10 +26,13 @@ func main() {
         }
 
         name := r.FormValue("name")
+        if len(name) == 0 {
+            http.Error(w, "The field `name` was not provided", http.StatusBadRequest)
+        }
 
         query := fmt.Sprintf(`
             INSERT INTO Patient (name)
-            VALUES (%v);
+            VALUES ("%v");
         `, name)
         
         res, err := db.Exec(query)
