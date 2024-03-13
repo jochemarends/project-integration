@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS Log (
     id         INT PRIMARY KEY AUTO_INCREMENT,
     kind       VARCHAR(32),
     message    VARCHAR(256),
-    patient_id INT FOREIGN KEY (patient_id) REFERENCES Patient(id)
-    -- dit is een comment
+    patient_id INT,
+    FOREIGN KEY (patient_id) REFERENCES Patient (id)
 );
 
