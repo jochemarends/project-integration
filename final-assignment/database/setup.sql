@@ -4,12 +4,12 @@ USE PI;
 
 CREATE TABLE IF NOT EXISTS Patient (
     id   INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(256),
+    name VARCHAR(256)
 );
 
 CREATE TABLE IF NOT EXISTS Log (
     id      INT PRIMARY KEY AUTO_INCREMENT,
     kind    VARCHAR(32),
-    message VARCHAR(256),
+    message VARCHAR(256)
 );
 
