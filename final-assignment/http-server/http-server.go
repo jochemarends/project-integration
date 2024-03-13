@@ -28,6 +28,7 @@ func main() {
         name := r.FormValue("name")
         if len(name) == 0 {
             http.Error(w, "The field `name` was not provided", http.StatusBadRequest)
+            return
         }
 
         query := fmt.Sprintf(`
