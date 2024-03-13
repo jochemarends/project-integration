@@ -114,7 +114,7 @@ extern "C" void app_main() {
     wifi::init_sta();
 
     esp_http_client_config_t config{
-        .url = "http://192.168.0.120:8080/add-user?name=Jochem",
+        .url = "http://192.168.1.249:8080/add-patient",
         .event_handler = http::event_handler,
     };
 
