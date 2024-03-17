@@ -28,11 +28,15 @@ A gyroscope is a type of sensor that measures angular velocity \cite{passaro-201
 By integrating this angular velocity, the orientation of an object can be obtained.
 This data can be used by a wearable system to determine whether the user is in a lying position.
 An acceleration meter (also known as an accelerometer) is a sensor that measures linear velocity.
+By observing both the orientation and acceleration of an object, falls can be detected.
+However, false positives may occur when the wearer participates in activities that produce similar sensor readings to those of a fall, such as sports.
 
 \subsection{Barometric Pressure Sensor}
 
 A barometric pressure sensor measures atmospheric pressure.
-Because atmospheric pressure increases as altitude decreases, observing this data can be used in fall detection systems \cite{sun-2019}.
+Atmospheric pressure increases as altitude decreases, observing this data can be used in fall detection systems \cite{sun-2019}.
+Barometric pressure sensors have a lower sampling rate requirement than when using a gyroscope and accelerometer. \cite{sun-2019}.
+Choosing to use a barometric pressure sensor can increase the battery life of a device.
 
 \section{Data Storage}
 
@@ -49,21 +53,29 @@ Relational databases are a suitable option for storing dynamic data such as user
 
 \subsection{Non-Relational Database}
 
-In a non-relational datbase, data is not organized into rows and columns \cite{microsoft-nrd}.
+In a non-relational database, data is not organized into rows and columns \cite{microsoft-nrd}.
 Instead, data may be stored as JSON, graphs, or other formats \cite{microsoft-nrd}.
+In a non-relational database, data can be stored more efficiently.
 A non-relational database 
 A relational database can be easier to setup and in some cases data can be stored more efficiently.
 
 \subsection{Non-Volatile Memory}
+
 Non-volatile memory is a type of computer memory that retains stored data when power is disconnected, making it suitable for storing data such as credentials and firmware.
-Non volatile memory generally has slower write speeds, and has a reduced write endurance compared to volatile memory \cite{cintra-2013}.
+Non volatile memory generally provides slower write speeds and has a reduced write endurance compared to volatile memory \cite{cintra-2013}.
 
-\subsection{Flash}
-Flash memory is an electronic non-volatile computer memory storage meidum that can be electrically erased and reprogrammed.
+\subsubsection{Flash}
 
-%\subsection{F-RAM}
+Flash memory is a type of non-volatile computer memory that can be electrically programmed or erased.
+Flash memeory is relatively cheap.
 
-%\subsection{PS-RAM}
+\subsubsection{F-RAM}
+
+What to put here?
+
+\subsection{PS-RAM}
+
+What to put here?
 
 \clearpage
 
