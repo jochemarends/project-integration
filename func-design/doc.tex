@@ -18,7 +18,7 @@
 
 While classifying a fall might be a trivial task for humans, the concept of a fall is difficult to describe, making it hard to express in the form of a compter algorithm \cite{noury-2007}.
 When developing a fall detection system, an important choice that has to be made is what sensor(s) to use.
-When sensor(s) do not provide sufficient data, a system may not be able to distinguish between a fall and normal activities.
+When sensors do not provide sufficient data, a system may not be able to distinguish between a fall and normal activities.
 Several fall detection techniques were identified and their pros and cons are weighed below.
 
 \subsection{Gyroscope and Accelerometer}
@@ -35,8 +35,13 @@ However, false positives may occur when the wearer participates in activities th
 
 A barometric pressure sensor measures atmospheric pressure.
 Atmospheric pressure increases as altitude decreases, observing this data can be used in fall detection systems \cite{sun-2019}.
-Barometric pressure sensors have a lower sampling rate requirement than when using a gyroscope and accelerometer. \cite{sun-2019}.
-Choosing to use a barometric pressure sensor can increase the battery life of a device.
+Barometric pressure sensors require a lower sampling rate compared to when using a gyroscope and accelerometer. \cite{sun-2019}.
+Advantages of barometric pressure sensors are that they do not consume much power and provides the data regardless of its orientation.
+However, a barometric pressure sensor can only provide information along the vertical axis. while some gyroscopes and accelerometers are capable of providing data along three axes.
+
+\subsection{Impact Sensor}
+
+A sensor capable of measuring impacts may be used to detect falls, but it only provides limited information about a fall compared to the two previous mentioned techniques. As not every fall impacts the same location, deciding on the placement of this sensor may be a challenge.
 
 \section{Data Storage}
 
@@ -54,32 +59,33 @@ Relational databases are a suitable option for storing dynamic data such as user
 \subsection{Non-Relational Database}
 
 In a non-relational database, data is not organized into rows and columns \cite{microsoft-nrd}.
-Instead, data may be stored as JSON, graphs, or other formats \cite{microsoft-nrd}.
-In a non-relational database, data can be stored more efficiently.
-A non-relational database 
-A relational database can be easier to setup and in some cases data can be stored more efficiently.
+Instead, data may be stored as JSON, XML, graphs, or other formats \cite{microsoft-nrd}.
+In some cases, data can be stored more efficiently when using a non-relational database.
+Some non-relational databases provide a query language, while other offer an \gls{api}.
 
 \subsection{Non-Volatile Memory}
 
-Non-volatile memory is a type of computer memory that retains stored data when power is disconnected, making it suitable for storing data such as credentials and firmware.
-Non volatile memory generally provides slower write speeds and has a reduced write endurance compared to volatile memory \cite{cintra-2013}.
+Non-volatile memory is a type of computer memory that retains stored data when power is disconnected, making it suitable for storing data that should remain constant over time, such as credentials and firmware.
+Non-volatile memory generally provides slower write speeds and has a reduced write endurance compared to volatile memory \cite{cintra-2013}.
 
-\subsubsection{Flash}
+\subsubsection{Flash Memory}
 
 Flash memory is a type of non-volatile computer memory that can be electrically programmed or erased.
-Flash memeory is relatively cheap.
+Advantage of flash memory are that it is relatively cheap and does not comsume that much power \cite{yasar-2023}.
 
 \subsubsection{F-RAM}
 
-What to put here?
+\gls{fram} Is a type of non-volatile random access memory that similar to \gls{dram}, provides high access speeds. \cite{electronic-notes-fram}.
+\gls{fram} offers a higher write endurance compared to flash memory, but it comes at a higher cost and lower storege density.
 
 \subsection{PS-RAM}
 
-What to put here?
+\gls{psram} is a volatile type of memory that has features of both \gls{sram} and \gls{dram} \cite{winbond-psram}. What to put here ...?
 
 \clearpage
 
 \bibliographystyle{apacite}
+%\bibliographystyle{IEEEtranN}
 \bibliography{research}
 
 \end{document}

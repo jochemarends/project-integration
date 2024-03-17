@@ -8,6 +8,7 @@ BUILD_DIR := build
 TEX_FILES := $(wildcard *.tex)
 
 SOURCE_FILE := doc.tex
+BIB_FILE := research.bib
 OUTPUT_FILE := $(patsubst %.tex, $(BUILD_DIR)/%.pdf, $(SOURCE_FILE))
 
 LATEX := pdflatex
@@ -35,6 +36,10 @@ $(OUTPUT_FILE): $(TEX_FILES)
 .PHONY: open
 open:
 	@wslview $(OUTPUT_FILE)
+
+.PHONY: to-docx
+to-docx:
+	@pandoc doc.tex --bibliography=$(BIB_FILE) -o doc.docx
 
 .PHONY: clean
 clean:
