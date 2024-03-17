@@ -1,0 +1,73 @@
+\documentclass{article}
+
+\input{preamble.tex}
+
+\title{Project Integration \\ Functional Design}
+\author{Jochem Arends \\ 495637 \\ Group 1}
+\date{Academic Year: 2023-2024}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\tableofcontents
+\clearpage
+
+\section{Fall Detection}
+
+While classifying a fall might be a trivial task for humans, the concept of a fall is difficult to describe, making it hard to express in the form of a compter algorithm \cite{noury-2007}.
+When developing a fall detection system, an important choice that has to be made is what sensor(s) to use.
+When sensor(s) do not provide sufficient data, a system may not be able to distinguish between a fall and normal activities.
+Several fall detection techniques were identified and their pros and cons are weighed below.
+
+\subsection{Gyroscope and Accelerometer}
+
+Wearable devices commonly use a gyroscope, an acceleration meter, or a combination of both for fall detection \cite{delahoz-2014}.
+A gyroscope is a type of sensor that measures angular velocity \cite{passaro-2017}.
+By integrating this angular velocity, the orientation of an object can be obtained.
+An acceleration meter (also known as an accelerometer) is a sensor that measures linear velocity.
+
+\subsection{Barometric Pressure Sensor}
+
+A barometric pressure sensor measures atmospheric pressure.
+Because atmospheric pressure increases as altitude decreases, observing this data can be used in fall detection systems \cite{sun-2019}.
+
+\section{Data Storage}
+
+Having concrete ideas about where and how data will be stored is crucial for the design of the product.
+In this section, the concern is not only about dynamic data such as user data and sensor readings, but also about firmware and credentials.
+Several data storage options were identified and their pros and cons are weighed below.
+
+\subsection{Relational Database}
+
+In a relational database, data is organized into rows and columns, which together form a table \cite{ibm-rd}.
+SQL is often used for interacting with a relational database, offering a widely known syntax for querying data.
+When working with relational databases, one is often not concerned about the underlying format the database uses for storing the data.
+Relational databases are a suitable option for storing dynamic data such as user data and sensor readings.
+
+\subsection{Non-Relational Database}
+
+In a non-relational datbase, data is not organized into rows and columns \cite{microsoft-nrd}.
+Instead, data may be stored as JSON, graphs, or other formats \cite{microsoft-nrd}.
+A non-relational database 
+A relational database can be easier to setup and in some cases data can be stored more efficiently.
+
+\subsection{Non-Volatile Memory}
+Non-volatile memory is a type of computer memory that retains stored data when power is disconnected, making it suitable for storing data such as credentials and firmware.
+Non volatile memory generally has slower write speeds, and has a reduced write endurance compared to volatile memory \cite{cintra-2013}.
+
+\subsection{Flash}
+Flash memory is an electronic non-volatile computer memory storage meidum that can be electrically erased and reprogrammed.
+
+%\subsection{F-RAM}
+
+%\subsection{PS-RAM}
+
+\clearpage
+
+\bibliographystyle{apacite}
+\bibliography{research}
+
+\end{document}
+
