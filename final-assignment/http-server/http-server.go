@@ -51,6 +51,37 @@ func main() {
         fmt.Fprint(w, id)
     })
 
+    http.HandleFunc("/log-event", func(w http.ResponseWriter, r *http.Request) {
+        err := r.ParseForm()
+        if err != nil {
+            http.Error(w, err.Error(), http.StatusBadRequest)
+            return
+        }
+
+        id := r.FormValue("id")
+        if len(id) == 0 {
+            http.Error(w, "The field `id` was not provided", http.StatusBadRequest)
+            return
+        }
+
+        msg := r.FormValue("msg")
+        if len(msg) == 0 {
+            http.Error(w, "The field `msg` was not provided", http.StatusBadRequest)
+            return
+        }
+
+        query := fmt.Sprintf(`
+            INSERT INTO Log (kind, patient_id, message)
+            VALUES ("EVENT", "%v", "%v");
+        `, id, msg)
+        
+        _, err = db.Exec(query)
+        if err != nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }
+    })
+
     // Start the HTTP server
     err = http.ListenAndServe(port, nil)
     if err != nil {

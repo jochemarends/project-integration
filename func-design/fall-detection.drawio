@@ -1,0 +1,54 @@
+<mxfile host="app.diagrams.net" modified="2024-03-23T19:57:50.039Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0" etag="67HBCwm4qTr07Z_hWlwq" version="24.0.8" type="device">
+  <diagram name="Pagina-1" id="DJwRI7k1R7Xp09aRd1na">
+    <mxGraphModel dx="989" dy="1689" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="icR4zxKfLthtvKAayx7L-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="icR4zxKfLthtvKAayx7L-1" target="icR4zxKfLthtvKAayx7L-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="icR4zxKfLthtvKAayx7L-1" value="process sensor readings" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="280" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="icR4zxKfLthtvKAayx7L-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="icR4zxKfLthtvKAayx7L-3" target="icR4zxKfLthtvKAayx7L-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="icR4zxKfLthtvKAayx7L-3" value="read sensors" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="280" y="20" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="icR4zxKfLthtvKAayx7L-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="icR4zxKfLthtvKAayx7L-6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="449.9999999999998" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="icR4zxKfLthtvKAayx7L-10" value="yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="icR4zxKfLthtvKAayx7L-8">
+          <mxGeometry x="-0.1818" y="-2" relative="1" as="geometry">
+            <mxPoint y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="icR4zxKfLthtvKAayx7L-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="icR4zxKfLthtvKAayx7L-6" target="icR4zxKfLthtvKAayx7L-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340" y="360" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="340" y="310" />
+              <mxPoint x="240" y="310" />
+              <mxPoint x="240" />
+              <mxPoint x="340" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="icR4zxKfLthtvKAayx7L-11" value="no" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="icR4zxKfLthtvKAayx7L-9">
+          <mxGeometry x="-0.133" relative="1" as="geometry">
+            <mxPoint x="70" y="114" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="icR4zxKfLthtvKAayx7L-6" value="fall detected?" style="rhombus;whiteSpace=wrap;html=1;strokeWidth=2;fillColor=#d5e8d4;strokeColor=default;" vertex="1" parent="1">
+          <mxGeometry x="280" y="220" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="icR4zxKfLthtvKAayx7L-12" value="notify third partiesthat a fall occurred" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="450" y="230" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -83,11 +83,13 @@ namespace wifi {
         wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
         ESP_ERROR_CHECK(esp_wifi_init(&cfg));
 
+        // register handlers for WiFi and IP events
         esp_event_handler_instance_t any_id{};
         esp_event_handler_instance_t got_ip{};
         ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, ESP_EVENT_ANY_ID, event_handler, nullptr, &any_id));
         ESP_ERROR_CHECK(esp_event_handler_instance_register(IP_EVENT, IP_EVENT_STA_GOT_IP, event_handler, nullptr, &got_ip));
 
+        // WiFi configuration with credentials
         wifi_config_t wifi_config{
             .sta{
                 .ssid = "TP-LINK_3745",
@@ -95,15 +97,18 @@ namespace wifi {
             },
         };
 
+        // start WiFi
         ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
         ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
         ESP_ERROR_CHECK(esp_wifi_start());
 
+        // wait for one of the events to occur
         xEventGroupWaitBits(event_group, bits::connected | bits::fail, pdFALSE, pdFALSE, portMAX_DELAY);
     }
 }
 
 extern "C" void app_main() {
+    // try to initialize non-volatile storage
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         ESP_ERROR_CHECK(nvs_flash_erase());
@@ -111,10 +116,11 @@ extern "C" void app_main() {
     }
     ESP_ERROR_CHECK(ret);
 
+    // initialize WiFi using station mode
     wifi::init_sta();
 
     esp_http_client_config_t config{
-        .url = "http://192.168.1.249:8080/add-patient",
+        .url = "http://192.168.0.120:8080/add-patient",
         .event_handler = http::event_handler,
     };
 
@@ -122,9 +128,7 @@ extern "C" void app_main() {
     if (auto err = esp_http_client_perform(client); err == ESP_OK) {
         // something
     }
-    esp_http_client_cleanup(client);
 
-    while (false) {
-        std::this_thread::sleep_for(std::chrono::seconds{1});
-    }
+    esp_http_client_cleanup(client);
 }
+

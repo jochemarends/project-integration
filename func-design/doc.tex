@@ -43,6 +43,11 @@ However, a barometric pressure sensor can only provide information along the ver
 
 A sensor capable of measuring impacts may be used to detect falls, but it only provides limited information about a fall compared to the two previous mentioned techniques. As not every fall impacts the same location, deciding on the placement of this sensor may be a challenge.
 
+\subsection{Conclusion}
+
+After researching the different techniques, there was decided on using a gyroscope and accelerometer as sensors for the fall detection system.
+This because these sensor provide the the most data and they are already used in many systems.
+
 \section{Data Storage}
 
 Having concrete ideas about where and how data will be stored is crucial for the design of the product.
@@ -82,14 +87,94 @@ Advantage of flash memory are that it is relatively cheap and does not comsume t
 
 \gls{psram} is a volatile type of memory that has features of both \gls{sram} and \gls{dram} \cite{winbond-psram}. What to put here ...?
 
-\begin{tikzpicture}
-    \draw (0,0) rectangle (4,2) node[pos=0.5] {Text inside rectangle};
-\end{tikzpicture}
+\subsection{Conclusion}
+
+After conducting research, there was decided on using the combination of \gls{fram} and \gls{psram}.
+This because \gls{fram} of the high access speed and high write endurance.
+\gls{psram} will also be used since it is already on the microcontroller that is going to be used.
 
 \clearpage
 
-%\bibliographystyle{apacite}
-\bibliographystyle{IEEEtranN}
+\section{Software}
+
+\includegraphics[width=\textwidth]{software-structure-chart.png}
+
+\subsection{Heart Rate Monitor System}
+
+The heart rate monitor system will as its name suggest, monitor heart rate, and seek for abnormalities in a heart rate pattern.
+This module consist of three submodules: one for obtaining data, one for processing data, and one responding to accordingly to the data (notifying 3rd parties when abnormalities, otherwise no action required).
+The data for this system will be obtained by reading a sensor.
+Then, the system must analyse to data to determine whether a heart failure occurred.
+Finally, depending on the result of the previous step, some action has to be taken.
+
+\subsection{Fall Detection System}
+
+The fall decection system consists of similar modules as the heart rate monitor system.
+One for obtaining data by reading the gyroscope and accelerometer sensors.
+Another module analyzes the obtained data and potentially performs some kind of processing on it, before determining whether a fall occurred.
+Finally, a module that responds accordingly when a fall was detected by notifying a 3rd party, for example.
+
+\subsection{Time Keeping}
+
+The time keeping module is responsible for obtaining and displaying the current time on a display.
+
+\subsection{Notify Third Parties}
+
+When a fall occurred or abnormalities in the heart rate pattern were detected, a 3rd party has to be notified.
+When there is no connection, the message has to be buffered and send later when the connection is restored.
+When a connection is present, the message can and will immediately be send.
+Together with this message, the current time and location will be send.
+
+\subsection*{Language and Environment (If choosing ESP-IDF)}
+
+The device will be developed using ESP-IDF.
+ESP-IDF can be used in combination with VS Code, CLion, or any text editor, making it flexible for developers to use their preferred development workflow.
+The ESP-IDF supports both language and library features of more recent \cpp{} standards, which is something the Arduino IDE lacks.
+The ESP-IDF supports an Arduino component, making it possible to write code as would be done using the Arduino environment.
+
+\subsection*{Language and Environment (If choosing Arduino IDE)}
+
+The device will developed using the Arduino IDE.
+The Arduino IDE is easy to setup, supports many microcontrollers, and there are many resources available for it.
+
+\subsection{Flowcharts}
+
+Since the flowcharts of the heart rate monitor system and the fall detection system would look identical to each other, there is only made one to represent both of them.
+
+\includegraphics[width=\textwidth]{flowcharts.png}
+
+\subsection{State Diagram}
+
+\begin{tikzpicture}
+    \node [state,initial,accepting] (1) {startup};
+    \node [state,right of=1] (2) {monitoring};
+    \node [state,below right of=2] (3) {fall detected};
+    \node [state,above right of=2] (4) {heart failure}; 
+    \node [state,align=center,below right of=4,right=0.1] (5) {try to notify\\a 3rd party};
+
+    \draw (1) edge[above] node{} (2);
+    \draw (2) edge[above,bend right,left=0.3] node{$detecting\:a\:fall$} (3);
+    \draw (2) edge[above,bend  left,left=0.3] node{$detecting\:a\:heart\:failure$} (4);
+    \draw (2) edge[above,bend  left,left=0.3] node{$detecting\:a\:heart\:failure$} (4);
+    \draw (3) edge[bend right] node{} (5);
+    \draw (4) edge[bend  left] node{} (5);
+    \draw (5) edge[above,below=2] node{$message\:\:send$} (2);
+    \draw (5) edge[loop right] node{$no\:connection$} (5);
+\end{tikzpicture}
+
+\noindent
+When the device is turned on, it will initialize components in the startup state, after which it will transition to the monitor state.
+In the monitor state, the device will display the time to a screen and wait for the detection of abnormalities.
+Depending on what abnormality was detected, a transition to the "heart failure" state or "fall detected" state will occur.
+After the detection of such event, 3rd parties need to be notified.
+If the device is not able to establish a connection, it needs to buffer the message and try again later.
+If the device did achieve to establish a connection, it will send a message and transition back to the monitor state.
+
+\clearpage
+
+
+\bibliographystyle{apacite}
+%\bibliographystyle{IEEEtranN}
 \bibliography{research}
 
 \end{document}

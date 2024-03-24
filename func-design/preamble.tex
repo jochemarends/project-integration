@@ -9,6 +9,20 @@
 \usepackage{texlogos}
 \usepackage{tikz}
 
+\graphicspath{{images/}}
+
+\usetikzlibrary{automata, positioning, arrows}
+
+\newcommand{\cpp}{C\nolinebreak\hspace{-.05em}\raisebox{.4ex}{\tiny\bf +}\nolinebreak\hspace{-.10em}\raisebox{.4ex}{\tiny\bf +}}
+
+\tikzset{
+    ->, % makes the edges directed
+    >=stealth', % makes the arrow heads bold
+    node distance=3cm, % specifies the minimum distance between two nodes. Change if necessary.
+    every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+    initial text=$ $, % sets the text that appears on the start arrow
+}
+
 \renewcommand{\familydefault}{\sfdefault}
 
 % Acronyms go here.

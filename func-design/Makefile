@@ -39,7 +39,7 @@ open:
 
 .PHONY: to-docx
 to-docx:
-	@pandoc doc.tex --bibliography=$(BIB_FILE) -o doc.docx
+	@pandoc doc.tex --resource-path=images --bibliography=$(BIB_FILE) -o doc.docx
 
 .PHONY: clean
 clean:
