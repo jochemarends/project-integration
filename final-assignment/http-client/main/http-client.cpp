@@ -11,7 +11,12 @@
 #include "freertos/event_groups.h"
 #include "nvs_flash.h"
 
+#include "driver/gpio.h"
+#include "rom/gpio.h"
+
 #define TAG "HTTP CLIENT"
+
+int id = 1;
 
 namespace http {
     esp_err_t event_handler(esp_http_client_event_t* evt) {
@@ -46,6 +51,17 @@ namespace http {
             break;
         }
         return ESP_OK;
+    }
+}
+
+void log() {
+    esp_http_client_config_t config{
+        .url = "http://204.168.244.220:8080/log-event?id=1&msg=Button%20Pressed",
+    };
+
+    auto client = esp_http_client_init(&config);
+    if (auto err = esp_http_client_perform(client); err == ESP_OK) {
+        ESP_LOGI(TAG, "LOGGED!");
     }
 }
 
@@ -120,7 +136,7 @@ extern "C" void app_main() {
     wifi::init_sta();
 
     esp_http_client_config_t config{
-        .url = "http://192.168.0.120:8080/add-patient",
+        .url = "http://204.168.244.220:8080/add-patient?name=Jochem",
         .event_handler = http::event_handler,
     };
 
@@ -130,5 +146,23 @@ extern "C" void app_main() {
     }
 
     esp_http_client_cleanup(client);
+
+    constexpr gpio_num_t button_pin = GPIO_NUM_27;
+    int prev_level{};
+
+    gpio_pad_select_gpio(button_pin);
+    gpio_reset_pin(button_pin);
+    gpio_set_direction(button_pin, GPIO_MODE_INPUT);
+    gpio_set_pull_mode(button_pin, GPIO_PULLDOWN_ONLY); 
+
+    while (true) {
+        auto curr_level = gpio_get_level(button_pin);
+        if (prev_level == 0 && curr_level == 1) {
+            //ESP_LOGI(TAG, "HOI");
+            log();
+        }
+        prev_level = curr_level;
+        vTaskDelay(10 / portTICK_PERIOD_MS); 
+    }
 }
 
