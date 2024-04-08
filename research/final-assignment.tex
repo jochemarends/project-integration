@@ -1,7 +1,10 @@
 \section{Final Assignment}
 
-For the final assignment, I decided to manage a database using SQL and the ESP32.
-I chose this assignment because the high chance that the ESP32 has to interact with a database for the final product.
+For the final assignment, I am managing a database using SQL and the ESP32.
+I chose for this assignment because of the likelihood that the ESP32 has to interact with a database for the final product.
+The goal of this assignment is that the ESP32 will be able to log certain events, which will be stored into a database.
+The only event that will be logged is the pressing of a push button.
+The ESP32 will not communicate directly with the database; instead, it communicates with the database via a web server.
 
 \section{Demonstration Setup}
 
@@ -31,17 +34,27 @@ I chose this assignment because the high chance that the ESP32 has to interact w
     \end{circuitikz}
 \end{figure}
 
+\noindent
+I used the circuit above to connect the push button to the ESP32.
+The locations of the pins may differ depending on which version of the ESP32 is being used.
+The web server and the database are hosted a Raspberry Pi.
+I configured port forwarding so that the ESP32 can communicate with the web server from other networks.
+
 \subsection{Used Software Libraries}
 
-For the client have used the libraries that come with ESP-IDF.
+For the client, I have used libraries that come with ESP-IDF.
 These libraries allowed me among other things to establish a \gls{wifi} connection and perform \gls{http} requests.
-For the server I used a Go package that provides a Go driver for MySQL, which can be found at: \url{https://github.com/go-sql-driver/mysql}.
+For the server, I have used Go's standard library packages working with \gls{http} and SQL.
+I have also used a package that enables MySQL support for Go's \href{https://pkg.go.dev/database/sql}{database/sql} standard library package.
+a Go driver for MySQL, which can be found at: \url{https://github.com/go-sql-driver/mysql}.
 I made use of Go's standard library for working with \gls{http}.
 
 \subsection{Software Architecture}
 
-The software consists of three major components: a\gls{http} client, a \gls{http} server, and a database. 
-Of these components, the \gls{http} server and the database are hosted a Raspberry Pi, while the \gls{http} client runs on an ESP32.
+The software consists of three major components: a \gls{http} client, a \gls{http} server, and a relational database.
+The ESP32 is communicating with the database via a web server.
+The client makes \gls{http} requests to the server, after which server will query the database based on the request being made. Of these components, the  server and the database are hosted a Raspberry Pi, while the  client runs on an ESP32.
+
 The \gls{http} client communicates with the \gls{http} server, which in turn communicates with the database.
 The ESP32 is interacting with the database via a web server as hosting a SQL client would be a very intensive task for a microcontroller.
 
