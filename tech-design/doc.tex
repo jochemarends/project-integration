@@ -1,0 +1,59 @@
+\documentclass{article}
+
+\input{preamble.tex}
+
+\title{Project Integration \\ Technical Design}
+\author{Jochem Arends \\ 495637 \\ Group 1}
+\date{Academic Year: 2023-2024}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\begin{algorithmic}
+\Procedure{fall\_detection}{name}
+    \State $\vec{v} \gets$ \Call{read\_accelerometer}{}
+    \State $\vec{angular\_v} \gets$ \Call{read\_gyroscope}{}
+    \Statex
+    \If{$\lvert\vec{v}\rvert \geq threshold$ \textbf{and} \Call{in\_lying\_pose}{$angular\_v$}}
+        \State $location \gets$ \Call{get\_location}{}
+        \State $time \gets$ \Call{get\_time}{}
+        \State $event\_type \gets fall$
+        \Statex
+        \While{$no\:wireless\:connection$}
+            \State \Call{try\_to\_connect}{}
+            \State \Call{sleep}{} \Comment{non-blocking delay}
+        \EndWhile
+        \Statex
+        \State $msg \gets \{location,time,event\_type\}$
+        \State \Call{notify\_third\_party}{$msg$}
+        \State \Call{insert\_into\_database}{$msg$}
+    \EndIf
+\EndProcedure
+\end{algorithmic}
+\clearpage
+
+\begin{algorithmic}
+\Procedure{app\_main}{}
+    \If{$logged\:in$}
+        \State \Call{prompt\_for\_credentials}{}
+    \EndIf
+    \Statex
+    \State $\vec{data} \gets$ \Call{fetch\_data}{}
+    \Statex
+    \Repeat
+        \If{$database\:updated$}
+            \State $\vec{data} \gets$ \Call{fetch\_data}{}
+        \EndIf
+        \Statex
+        \ForAll{$row\in\vec{data}$}
+            \State \Call{render}{$row$}
+        \EndFor
+    \Until $forever$
+\EndProcedure
+
+\end{algorithmic}
+
+\end{document}
+

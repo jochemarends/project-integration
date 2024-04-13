@@ -1,0 +1,50 @@
+\usepackage[hidelinks]{hyperref}
+\usepackage[outputdir=build]{minted}
+\usepackage[toc,acronym,nonumberlist,style=super]{glossaries}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{texlogos}
+\usepackage{tikz}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\graphicspath{{images/}}
+
+\usetikzlibrary{automata, positioning, arrows}
+
+\newcommand{\cpp}{C\nolinebreak\hspace{-.05em}\raisebox{.4ex}{\tiny\bf +}\nolinebreak\hspace{-.10em}\raisebox{.4ex}{\tiny\bf +}}
+
+\tikzset{
+    ->, % makes the edges directed
+    >=stealth', % makes the arrow heads bold
+    node distance=3cm, % specifies the minimum distance between two nodes. Change if necessary.
+    every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+    initial text=$ $, % sets the text that appears on the start arrow
+}
+
+%\renewcommand{\familydefault}{\sfdefault}
+
+% Acronyms go here.
+\newacronym{acs}{ACS}{Applied Computer Science}
+\newacronym{aiot}{AIoT}{Artificial Intelligence of Things}
+\newacronym{rd}{R\&D}{Research and Development}
+\newacronym{http}{HTTP}{Hypertext Transfer Protocol}
+\newacronym{api}{API}{Application Programming Interface}
+\newacronym{fram}{F-RAM}{Ferroelectric Random-Access Memory}
+\newacronym{dram}{DRAM}{Dynamic RAM}
+\newacronym{psram}{PSRAM}{Pseudostatic RAM}
+\newacronym{sram}{PSRAM}{Static RAM}
+
+% Glossaries go here.
+\makeglossaries
+
+\newglossaryentry{wifi}{
+    name=WiFi,
+    description={A wireless networking technology that uses radio waves to provide high-speed Internet access},
+}
+
+\newglossaryentry{bluetooth}{
+    name=Bluetooth,
+    description={A short-range wireless interconnection of mobile phones, computers, and other electronic devices},
+}
+
