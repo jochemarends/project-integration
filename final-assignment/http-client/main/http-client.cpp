@@ -1,8 +1,8 @@
 #include <chrono>
 #include <cstdint>
-#include <iostream>
 #include <thread>
 
+#include "driver/gpio.h"
 #include "esp_event.h"
 #include "esp_http_client.h"
 #include "esp_log.h"
@@ -10,8 +10,6 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/event_groups.h"
 #include "nvs_flash.h"
-
-#include "driver/gpio.h"
 #include "rom/gpio.h"
 
 #define TAG "HTTP CLIENT"

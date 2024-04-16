@@ -1,0 +1,141 @@
+[1mdiff --git a/final-assignment/http-client/main/http-client.cpp b/final-assignment/http-client/main/http-client.cpp[m
+[1mindex 2ace143..88e5db9 100644[m
+[1m--- a/final-assignment/http-client/main/http-client.cpp[m
+[1m+++ b/final-assignment/http-client/main/http-client.cpp[m
+[36m@@ -1,8 +1,8 @@[m
+ #include <chrono>[m
+ #include <cstdint>[m
+[31m-#include <iostream>[m
+ #include <thread>[m
+ [m
+[32m+[m[32m#include "driver/gpio.h"[m
+ #include "esp_event.h"[m
+ #include "esp_http_client.h"[m
+ #include "esp_log.h"[m
+[36m@@ -10,8 +10,6 @@[m
+ #include "freertos/FreeRTOS.h"[m
+ #include "freertos/event_groups.h"[m
+ #include "nvs_flash.h"[m
+[31m-[m
+[31m-#include "driver/gpio.h"[m
+ #include "rom/gpio.h"[m
+ [m
+ #define TAG "HTTP CLIENT"[m
+[1mdiff --git a/final-assignment/http-server/http-server.go b/final-assignment/http-server/http-server.go[m
+[1mindex e04f6f8..77a04d8 100644[m
+[1m--- a/final-assignment/http-server/http-server.go[m
+[1m+++ b/final-assignment/http-server/http-server.go[m
+[36m@@ -18,6 +18,7 @@[m [mfunc main() {[m
+     }[m
+     defer db.Close()[m
+ [m
+[32m+[m[32m    // Adding a new patient[m
+     http.HandleFunc("/add-patient", func(w http.ResponseWriter, r *http.Request) {[m
+         err := r.ParseForm()[m
+         if err != nil {[m
+[36m@@ -51,6 +52,7 @@[m [mfunc main() {[m
+         fmt.Fprint(w, id)[m
+     })[m
+ [m
+[32m+[m[32m    // Logging of an event[m
+     http.HandleFunc("/log-event", func(w http.ResponseWriter, r *http.Request) {[m
+         err := r.ParseForm()[m
+         if err != nil {[m
+[1mdiff --git a/research/final-assignment.tex b/research/final-assignment.tex[m
+[1mindex d2b3370..86005f4 100644[m
+[1m--- a/research/final-assignment.tex[m
+[1m+++ b/research/final-assignment.tex[m
+[36m@@ -2,11 +2,12 @@[m
+ [m
+ For the final assignment, I am managing a database using SQL and the ESP32.[m
+ I chose for this assignment because of the likelihood that the ESP32 has to interact with a database for the final product.[m
+[31m-The goal of this assignment is that the ESP32 will be able to log certain events, which will be stored into a database.[m
+[31m-The only event that will be logged is the pressing of a push button.[m
+[32m+[m[32mThe goal of this assignment is to make the ESP32 able to log certain events, which will be stored into a database.[m
+[32m+[m[32mThe event that will be logged is the pressing down of a push button.[m
+ The ESP32 will not communicate directly with the database; instead, it communicates with the database via a web server.[m
+[32m+[m[32mThis is removes the need for the ESP32 to run a heavy SQL client and instead a much simpler HTTP client can be used.[m
+ [m
+[31m-\section{Demonstration Setup}[m
+[32m+[m[32m\subsection{Demonstration Setup}[m
+ [m
+ \begin{figure}[htbp][m
+     \centering[m
+[36m@@ -37,29 +38,52 @@[m [mThe ESP32 will not communicate directly with the database; instead, it communica[m
+ \noindent[m
+ I used the circuit above to connect the push button to the ESP32.[m
+ The locations of the pins may differ depending on which version of the ESP32 is being used.[m
+[31m-The web server and the database are hosted a Raspberry Pi.[m
+[31m-I configured port forwarding so that the ESP32 can communicate with the web server from other networks.[m
+[32m+[m[32mAs for setting up the software, the client is flashed onto the ESP32 and the web server and the database are hosted a Raspberry Pi.[m
+[32m+[m[32mI configured port forwarding on my home network so that the ESP32 can communicate with the web server from other networks.[m
+[32m+[m
+[32m+[m[32m\subsection{Development Environment and Tooling}[m
+[32m+[m
+[32m+[m[32mFor programming the ESP32, I decided on using the ESP-IDF.[m
+[32m+[m[32mI have used the \code{idf.py} command-line tool for building and flashing the project.[m
+[32m+[m[32mFor configuring the web server and database I used OpenSSH, to establish a SSH connection.[m
+[32m+[m[32mI wrote the code using the Vim text editor and used Git for version control.[m
+ [m
+ \subsection{Used Software Libraries}[m
+ [m
+ For the client, I have used libraries that come with ESP-IDF.[m
+ These libraries allowed me among other things to establish a \gls{wifi} connection and perform \gls{http} requests.[m
+[31m-For the server, I have used Go's standard library packages working with \gls{http} and SQL.[m
+[31m-I have also used a package that enables MySQL support for Go's \href{https://pkg.go.dev/database/sql}{database/sql} standard library package.[m
+[31m-a Go driver for MySQL, which can be found at: \url{https://github.com/go-sql-driver/mysql}.[m
+[31m-I made use of Go's standard library for working with \gls{http}.[m
+[32m+[m[32mFor the server, I used Go's standard library packages for working with \gls{http} and SQL.[m
+[32m+[m[32mGo's standard library package \href{https://pkg.go.dev/database/sql}{database/sql} does not work with MySQL out of the box.[m
+[32m+[m[32mI had to use another package that enables MySQL support for Go's \href{https://pkg.go.dev/database/sql}{database/sql} standard library package.[m
+[32m+[m[32mThis package contains a Go driver for MySQL and can be found at: \url{https://github.com/go-sql-driver/mysql}.[m
+ [m
+ \subsection{Software Architecture}[m
+ [m
+ The software consists of three major components: a \gls{http} client, a \gls{http} server, and a relational database.[m
+[31m-The ESP32 is communicating with the database via a web server.[m
+[31m-The client makes \gls{http} requests to the server, after which server will query the database based on the request being made. Of these components, the  server and the database are hosted a Raspberry Pi, while the  client runs on an ESP32.[m
+[32m+[m[32mThe ESP32 is communicating with the web server and the web server communicates with the database.[m
+[32m+[m[32mThe client makes \gls{http} requests to the server, after which the server will query the database based on the request being made.[m
+[32m+[m[32mThere are two types of request that can be made: one for creating new users and another one for logging events.[m
+[32m+[m[32mI have put the \gls{erd} of the database below.[m
+[32m+[m[32mThe database consists of two tables: one for storing patient data and another one for holding logs.[m
+[32m+[m
+[32m+[m[32m\begin{center}[m
+[32m+[m[32m\includegraphics[width=\textwidth]{images/erd}[m
+[32m+[m[32m\end{center}[m
+ [m
+[31m-The \gls{http} client communicates with the \gls{http} server, which in turn communicates with the database.[m
+[31m-The ESP32 is interacting with the database via a web server as hosting a SQL client would be a very intensive task for a microcontroller.[m
+[32m+[m[32m%Of these components, the  server and the database are hosted a Raspberry Pi, while the  client runs on an ESP32.[m
+[32m+[m[32m%The \gls{http} client communicates with the \gls{http} server, which in turn communicates with the database.[m
+[32m+[m[32m%The ESP32 is interacting with the database via a web server as hosting a SQL client would be a very intensive task for a microcontroller.[m
+ [m
+ \subsection{Results}[m
+ [m
+[32m+[m[32mAt first instance, I wanted to query the database directly from the ESP32.[m
+[32m+[m[32mHowever, I soon found out that this was a non-trivial task.[m
+[32m+[m[32mThis would require the ESP32 to run a SQL client.[m
+[32m+[m[32mWhile I found online resources on how to do this[m
+[32m+[m[32mI decided instead to use a HTTP server.[m
+[32m+[m
+[32m+[m
+[32m+[m[32mI came a challenge for how to designing the software architecture.[m
+ I did not experience any problems when working on this assignment.[m
+ However, I did come accross some challenges for the design.[m
+ At first instance I thought [m
+[1mdiff --git a/research/preamble.tex b/research/preamble.tex[m
+[1mindex 624a424..62a7c94 100644[m
+[1m--- a/research/preamble.tex[m
+[1m+++ b/research/preamble.tex[m
+[36m@@ -20,6 +20,7 @@[m
+ \newacronym{rd}{R\&D}{Research and Development}[m
+ \newacronym{http}{HTTP}{Hypertext Transfer Protocol}[m
+ \newacronym{sdk}{SDK}{Software Development Kit}[m
+[32m+[m[32m\newacronym{erd}{ERD}{Entity Relationship Diagram}[m
+ [m
+ % Glossaries go here.[m
+ \makeglossaries[m
+[1mdiff --git a/research/research.pdf b/research/research.pdf[m
+[1mindex 9f6a512..7857f1c 100644[m
+Binary files a/research/research.pdf and b/research/research.pdf differ

@@ -18,6 +18,7 @@ func main() {
     }
     defer db.Close()
 
+    // Adding a new patient
     http.HandleFunc("/add-patient", func(w http.ResponseWriter, r *http.Request) {
         err := r.ParseForm()
         if err != nil {
@@ -51,6 +52,7 @@ func main() {
         fmt.Fprint(w, id)
     })
 
+    // Logging of an event
     http.HandleFunc("/log-event", func(w http.ResponseWriter, r *http.Request) {
         err := r.ParseForm()
         if err != nil {
