@@ -36,7 +36,7 @@
 
 \begin{algorithmic}
 \Procedure{app\_main}{}
-    \If{$logged\:in$}
+    \If{$not\:logged\:in$}
         \State \Call{prompt\_for\_credentials}{}
     \EndIf
     \Statex
@@ -52,7 +52,30 @@
         \EndFor
     \Until $forever$
 \EndProcedure
+\end{algorithmic}
+\clearpage
 
+\begin{algorithmic}
+    \Procedure{startup}{}
+        \State \Call{init\_components}{}
+        \Statex
+        \If{$not\:logged\:in$}
+            \State $username \gets$ \Call{prompt\_for\_username}{}
+            \State $password \gets$ \Call{prompt\_for\_password}{}
+            \Statex
+            \If{$has\:account$}
+                \State \Call{login}{$username,password$}
+            \Else
+                \State $contact\:person \gets$ \Call{prompt\_for\_phone\_number}{}
+                \Statex
+                \State \Call{write\_nvm}{$username$} \Comment to non-volatile memory
+                \State \Call{write\_nvm}{$password$}
+                \State \Call{write\_nvm}{$contact\:person$}
+                \Statex
+                \State \Call{add\_to\_database}{$username,password,contact\:person$}
+            \EndIf
+        \EndIf
+    \EndProcedure
 \end{algorithmic}
 
 \end{document}

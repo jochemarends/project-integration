@@ -1,17 +1,17 @@
-#include <cstdint>
-#include <thread>
 #include <chrono>
-#include <iostream>
-#include <iostream>
+#include <cstdint>
 #include <cstring>
+#include <iostream>
+#include <iostream>
+#include <thread>
 
 #include "esp_bt.h"
 #include "esp_bt_main.h"
 #include "esp_gap_ble_api.h"
-#include "esp_log.h"
-#include "esp_gatts_api.h"
-#include "nvs_flash.h"
 #include "esp_gatt_common_api.h"
+#include "esp_gatts_api.h"
+#include "esp_log.h"
+#include "nvs_flash.h"
 
 #define GATTS_TAG "GATTS"
 #define DEVICE_NAME "ESP32-JA"
@@ -121,7 +121,7 @@ namespace ble {
             service_id.id.inst_id = 0x00;
             service_id.id.uuid.len = ESP_UUID_LEN_16;
             service_id.id.uuid.uuid.uuid16 = uuid;
-            esp_ble_gap_set_device_name("ESP-32-J");
+            esp_ble_gap_set_device_name("ESP-32-LEDS-BLE");
             auto ret = esp_ble_gap_config_adv_data(&adv_data);
             if (ret){
                 ESP_LOGE(GATTS_TAG, "config adv data failed, error code = %x", ret);
@@ -166,7 +166,12 @@ namespace ble {
 
 
 extern "C" void app_main() {
-    ESP_ERROR_CHECK(nvs_flash_init());
+    auto ret = nvs_flash_init();
+    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        ret = nvs_flash_init();
+    }
+    ESP_ERROR_CHECK(ret);
 
     // configure bluetooth controller
     esp_bt_controller_config_t bt_cfg = BT_CONTROLLER_INIT_CONFIG_DEFAULT();
