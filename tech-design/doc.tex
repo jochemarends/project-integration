@@ -77,6 +77,41 @@
         \EndIf
     \EndProcedure
 \end{algorithmic}
+\clearpage
+
+\begin{algorithmic}
+    \Procedure{observe\_heart\_rate}{}
+        \State $bpm \gets$ \Call{read\_bpm}{}
+        \Statex
+        \If{$bpm < threshold_{min}$ \textbf{or} $bpm > threshold_{max}$}
+            \State $location \gets$ \Call{get\_location}{}
+            \State $time \gets$ \Call{get\_time}{}
+            \State $event\_type \gets heart failure$
+            \Statex
+            \While{$no\:wireless\:connection$}
+                \State \Call{try\_to\_connect}{}
+                \State \Call{sleep}{} \Comment{non-blocking delay}
+            \EndWhile
+            \Statex
+            \State $msg \gets \{location,time,event\_type\}$
+            \State \Call{notify\_third\_party}{$msg$}
+            \State \Call{insert\_into\_database}{$msg$}
+        \EndIf
+    \EndProcedure
+\end{algorithmic}
+\clearpage
+
+\begin{algorithmic}
+    \Procedure{main\_loop}{}
+        \State \Call{fall\_detection}{} \Comment Also acts on events.
+        \State \Call{obverse\_heart\_rate}{} \Comment Also acts on events.
+        \Statex
+        \State $time \gets$ \Call{get\_current\_time}{}
+        \State \Call{render}{$time$}
+        \Call{main\_loop}{}
+    \EndProcedure
+\end{algorithmic}
+\clearpage
 
 \end{document}
 

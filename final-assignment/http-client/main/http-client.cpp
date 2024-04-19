@@ -1,6 +1,8 @@
 #include <chrono>
 #include <cstdint>
 #include <thread>
+#include <charconv>
+#include <cstdio>
 
 #include "driver/gpio.h"
 #include "esp_event.h"
@@ -36,6 +38,9 @@ namespace http {
             ESP_LOGI(TAG, "HTTP_EVENT_ON_DATA, len=%d", evt->data_len);
             if (!esp_http_client_is_chunked_response(evt->client)) {
                 printf("%.*s", evt->data_len, (char*)evt->data);
+                const char* first = reinterpret_cast<char*>(evt->data);
+                const char* last = first + evt->data_len;
+                std::from_chars(first, last, id);
             }
 
             break;
@@ -53,8 +58,12 @@ namespace http {
 }
 
 void log() {
+    char buffer[128];
+    sprintf(buffer, "http://204.168.244.220:8080/log-event?id=%d&msg=Button%%20Pressed", id);
+
     esp_http_client_config_t config{
-        .url = "http://204.168.244.220:8080/log-event?id=1&msg=Button%20Pressed",
+        //.url = "http://204.168.244.220:8080/log-event?id=1&msg=Button%20Pressed",
+        .url = buffer,
     };
 
     auto client = esp_http_client_init(&config);
@@ -106,8 +115,10 @@ namespace wifi {
         // WiFi configuration with credentials
         wifi_config_t wifi_config{
             .sta{
-                .ssid = "TP-LINK_3745",
-                .password = "tilligte",
+                //.ssid = "TP-LINK_3745",
+                //.password = "tilligte",
+                .ssid = "ESP demo",
+                .password = "esp12345",
             },
         };
 

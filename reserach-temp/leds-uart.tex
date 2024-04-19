@@ -1,0 +1,13 @@
+
+\section{Assignment 2}
+Show that the ESP32 can turn three different LEDs on and off separately by sending commands over the serial interface.
+
+\subsection{Toolchain}
+Just like the previous one, for this assignment I have used the ESP-IDF toolchain.
+The ESP-IDF toolchain provides good \cpluspluslogo{} support.
+From the UART can be read using \texttt{std::cin}, but to get the usual behaviour, our program needs to initialize the UART driver first.
+
+\clearpage
+\subsection{Software}
+\inputminted{cpp}{../leds-uart/main/leds-uart.cpp}
+
